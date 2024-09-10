@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="ja_JP">
+
+<head>
+  <title>エネルギー効率改善アドバイザー</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <style>
+    /* 全体的なスタイル */
+    body {
+      font-family: 'Roboto', sans-serif;
+      margin: 0;
+      background-color: #f2f2f2;
+      color: #333;
+    }
+
+    /* ヘッダー */
+    header {
+      background-color: #333;
+      color: white;
+      justify-content: flex-start;
+      /* 要素を左端に配置 */
+      padding: 1rem;
+      display: flex;
+      align-items: center;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 10;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 1.8rem;
+    }
+
+    /* ハンバーガーメニュー */
+    .hamburger {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      width: 30px;
+      height: 20px;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .hamburger span {
+      display: block;
+      width: 100%;
+      height: 3px;
+      background-color: white;
+      border-radius: 5px;
+      transition: all 0.3s ease-in-out;
+    }
+
+    /* メニューオープン時のアイコン */
+    .hamburger.open span:nth-child(1) {
+      transform: rotate(45deg) translate(5px, 5px);
+    }
+
+    .hamburger.open span:nth-child(2) {
+      opacity: 0;
+    }
+
+    .hamburger.open span:nth-child(3) {
+      transform: rotate(-45deg) translate(5px, -5px);
+    }
+
+    .hamburger-container {
+      position: fixed;
+      top: 20px;
+      /* 上からの距離 */
+      right: 20px;
+      /* 右からの距離 */
+      z-index: 11;
+      /* ヘッダーより上に表示 */
+    }
+
+
+    /* サイドバー */
+    .sidebar {
+      position: fixed;
+      top: 61px;
+      left: 0;
+      width: 250px;
+      height: calc(100% - 61px);
+      background-color: #e0e0e0;
+      transition: transform 0.3s ease-in-out;
+      transform: translateX(-250px);
+      box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
+      z-index: 9;
+      overflow-y: auto;
+      -ms-overflow-style: none;
+      /* IE and Edge */
+      scrollbar-width: none;
+      /* Firefox */
+    }
+
+    .sidebar::-webkit-scrollbar {
+      display: none;
+      /* Chrome, Safari and Opera */
+    }
+
+    .sidebar.open {
+      transform: translateX(0);
+    }
+
+    .sidebar-content {
+      padding: 1rem;
+    }
+
+    .sidebar-item {
+      display: flex;
+      align-items: center;
+      padding: 1rem;
+      margin-bottom: 0.5rem;
+      border-radius: 5px;
+      cursor: pointer;
+      background-color: #f5f5f5;
+      transition: background-color 0.2s;
+    }
+
+    .sidebar-item i {
+      margin-right: 10px;
+    }
+
+    .sidebar-item.active,
+    .sidebar-item:hover {
+      background-color: #ddd;
+    }
+
+    /* メインコンテンツ */
+    main {
+      padding: 7rem 2rem 2rem;
+    }
+
+    /* コンテンツエリア */
+    .content-section {
+      padding: 20px;
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      margin-bottom: 20px;
+    }
+
+    /* フォーム */
+    .content-section label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+
+    .content-section input[type="number"],
+    .content-section input[type="range"],
+    .content-section input[type="password"],
+    .content-section select {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+      margin-bottom: 10px;
+    }
+
+    /* ボタン */
+    .button {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 4px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .button:hover {
+      background-color: #0056b3;
+    }
+
+    /* 結果表示 */
+    .result {
+      margin-top: 20px;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    /* スライダーの値を表示する要素 */
+    .slider-value {
+      display: inline-block;
+      margin-left: 10px;
+      font-weight: normal;
+    }
+
+    /* Chrome, Safari, Edge 対応 */
+::-webkit-scrollbar {
+    display: none;
+}
+
+/* Firefox 対応 */
+* {
+    scrollbar-width: none;
+}
+
+/* Internet Explorer, Edge 対応 */
+* {
+    -ms-overflow-style: none;
+}
+</style>
+</head>
+
+<body>
+  <header>
+    <h1><i class="fas fa-bolt"></i> エネルギー効率改善アドバイザー</h1>
+    <div class="hamburger-container">
+      <div class="hamburger" id="hamburger">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+  </header>
+  <div class="sidebar" id="sidebar">
+    <div class="sidebar-content">
+      <div class="sidebar-item active" data-target="homeSection">
+        <i class="fas fa-home"></i>
+        ホーム
+      </div>
+      <div class="sidebar-item" data-target="analysisSection">
+        <i class="fas fa-chart-bar"></i>
+        分析
+      </div>
+      <div class="sidebar-item" data-target="aiAnalysisSection">
+        <i class="fas fa-brain"></i>
+        AIを使用して計算
+      </div>
+      <div class="sidebar-item" data-target="settingsSection">
+        <i class="fas fa-cog"></i>
+        設定
+      </div>
+    </div>
+  </div>
+  <main>
+    <div id="homeSection" class="content-section">
+      <h2><i class="fas fa-sun"></i> エネルギー効率アドバイザーへようこそ </h2>
+      <h2>概要</h2>
+      <p>このアプリケーションの開発にはelectronを使用しています</p>
+      <p>また本ソフトウェアは<span style="color: blue;">エネルギー効率アドバイザー</span>Java版をNodeJSで再開発したソフトウェアです</p>
+      <br>
+      <h2>使用方法☟</h2>
+      <p>NodeJS版では分析/AIに質問/設定と三つのタブで管理されています<br>
+        詳細については以下の機能一覧を確認して下さい
+
+        <h3>・機能一覧</h3>
+        <ui>
+          <li>
+            分析 :この機能はオフラインでも使用可能な簡易的な計算が可能です
+          </li>
+          <br>
+          <li>
+            AIを使用して計算 :この機能はWEBAPIに質問を送りAIが最適な回答をしてくれます
+          </li>
+          <br>
+          <li>
+            設定 :現在はAIのプロバイダーの指定/Tokenの発行の設定のみ追加しています
+          </li>
+        </ui>
+        <br>
+        <p>以上が現時点のNodeJS版の機能です</p>
+        
+      
+      </p>
+      <p>v0.3 α版</p>
+    </div>
+    <div id="analysisSection" class="content-section">
+      <h2><i class="fas fa-chart-line"></i> 分析 </h2>
+      <p>お知らせ:<br>
+        分析の回答をより詳細に行うようにしました
+      </p>
+      <form id="analysisForm">
+        <label for="panelCount">太陽光パネルの数【最大30】</label>
+        <input type="number" id="panelCount" name="panelCount" min="1" max="30" value="" required>
+        <label for="sunshineTime">日照時間【最大24時間】</label>
+        <input type="number" id="sunshineTime" name="sunshineTime" min="1" max="24" value="" required>
+        <button type="button" class="button" id="analyzeButton"><i class="fas fa-calculator"></i> 実行</button>
+      </form>
+      <div id="result" class="result"></div>
+    </div>
+    <div id="aiAnalysisSection" class="content-section">
+      <h2><i class="fas fa-brain"></i> AIを使用して計算 </h2>
+      <form id="aiAnalysisForm">
+        <label for="aiPanelCount">太陽光パネルの数【最大30】</label>
+        <input type="range" id="aiPanelCount" name="aiPanelCount" min="1" max="30" value="1" required>
+        <span id="aiPanelCountValue" class="slider-value">1</span>
+        <label for="aiSunshineTime">日照時間【最大24時間】</label>
+        <input type="range" id="aiSunshineTime" name="aiSunshineTime" min="1" max="24" value="1" required>
+        <span id="aiSunshineTimeValue" class="slider-value">1</span>
+        <label for="aiInstallationTime">設置した年</label>
+        <input type="number" id="aiInstallationTime" name="aiInstallationTime" min="1900" max="2024" value="2024"
+          required>
+        <label for="aiGeneration">1日の総発電量 (kWh)</label>
+        <input type="number" id="aiGeneration" name="aiGeneration" min="0" value="" required>
+        <label for="aiLocation">お住まいの地域</label>
+        <select id="aiLocation">
+          <option value="北海道">北海道</option>
+          <option value="青森県">青森県</option>
+          <option value="岩手県">岩手県</option>
+          <option value="宮城県">宮城県</option>
+          <option value="秋田県">秋田県</option>
+          <option value="山形県">山形県</option>
+          <option value="福島県">福島県</option>
+          <option value="茨城県">茨城県</option>
+          <option value="栃木県">栃木県</option>
+          <option value="群馬県">群馬県</option>
+          <option value="埼玉県">埼玉県</option>
+          <option value="千葉県">千葉県</option>
+          <option value="東京都">東京都</option>
+          <option value="神奈川県">神奈川県</option>
+          <option value="新潟県">新潟県</option>
+          <option value="富山県">富山県</option>
+          <option value="石川県">石川県</option>
+          <option value="福井県">福井県</option>
+          <option value="山梨県">山梨県</option>
+          <option value="長野県">長野県</option>
+          <option value="岐阜県">岐阜県</option>
+          <option value="静岡県">静岡県</option>
+          <option value="愛知県">愛知県</option>
+          <option value="三重県">三重県</option>
+          <option value="滋賀県">滋賀県</option>
+          <option value="京都府">京都府</option>
+          <option value="大阪府">大阪府</option>
+          <option value="兵庫県">兵庫県</option>
+          <option value="奈良県">奈良県</option>
+          <option value="和歌山県">和歌山県</option>
+          <option value="鳥取県">鳥取県</option>
+          <option value="島根県">島根県</option>
+          <option value="岡山県">岡山県</option>
+          <option value="広島県">広島県</option>
+          <option value="山口県">山口県</option>
+          <option value="徳島県">徳島県</option>
+          <option value="香川県">香川県</option>
+          <option value="愛媛県">愛媛県</option>
+          <option value="高知県">高知県</option>
+          <option value="福岡県">福岡県</option>
+          <option value="佐賀県">佐賀県</option>
+          <option value="長崎県">長崎県</option>
+          <option value="熊本県">熊本県</option>
+          <option value="大分県">大分県</option>
+          <option value="宮崎県">宮崎県</option>
+          <option value="鹿児島県">鹿児島県</option>
+          <option value="沖縄県">沖縄県</option>
+        </select>
+        <label for="aiAngle">設置角度 (度)</label>
+        <input type="range" id="aiAngle" name="aiAngle" min="0" max="180" value="" required>
+        <span id="aiAngleValue" class="slider-value">0</span>
+        <label for="aiSystemCapacity">太陽光発電システム全体の容量 (kW)</label>
+        <input type="number" id="aiSystemCapacity" name="aiSystemCapacity" min="0" value="" required>
+        <label for="aiPurpose">アドバイスを求める目的(任意)</label>
+        <input type="text" id="aiPurpose" name="aiPurpose">
+        <button type="button" class="button" id="aiAnalyzeButton"><i class="fas fa-calculator"></i> AIに質問</button>
+      </form>
+      <div id="aiResult" class="result"></div>
+    </div>
+
+
+    <div id="settingsSection" class="content-section">
+      <h2><i class="fas fa-tools"></i> 設定 </h2>
+      <br>
+      <p>AIプロバイダーに関してWEBAPI側の問題で使用できないAIがあるんで一部のAIに絞っています<br><br>最終WEBAPI更新日2024/08/30 <br>webapi:
+        https://gamelist1990.github.io/gamelist1990/page/<br>webapi及びMenuClient管理者(<a href="https://github.com/gamelist1990" target="_blank">Gamelist1990</a>)</p>
+      <label for="aiProvider">AIプロバイダー:</label>
+      <select id="aiProvider">
+        <option value="Koala">Koala</option>
+        <option value="Pizzagpt">Pizzagpt</option>
+        <option value="command_r">HuggingFace</option>
+        <option value="Gemini">Gemini</option>
+        <option value="GeminiPro">GeminiProFlush</option>
+      </select>
+      <label for="aiToken">Token発行する:</label>
+      <button type="button" id="showDialogButton">取得</button>
+      <br>
+      <input type="password" id="api" placeholder="APIを入力してください">
+
+      <br>
+      <br>
+      <button id="saveSettings">設定を保存</button>
+    </div>
+  </main>
+
+  <script src="renderer.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+
+      let ConfigData = {}; // 初期値は空オブジェクト
+
+      // メインプロセスから設定を受け取る
+      window.api.receive('load-settings', (data) => {
+        ConfigData = data; // JSONデータをそのまま格納
+        console.log(JSON.stringify(data))
+        document.getElementById('aiProvider').value = ConfigData.settingsData.provider;
+        document.getElementById('api').value = ConfigData.settingsData.token;
+      });
+      // Token発行ボタンのイベントリスナー
+      const showDialogButton = document.getElementById('showDialogButton');
+      const webapi = document.getElementById('api');
+
+      showDialogButton.addEventListener('click', async () => {
+        try {
+          // APIにPOSTリクエストを送信
+          const response = await fetch('https://webapi-8trs.onrender.com/create_token', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          });
+
+          const data = await response.json();
+          const accessToken = data.access_token;
+
+          // ダイアログを表示してコピーを促す
+          const message = `受け取ったキー: ${accessToken}\n\nコピーして続行してください。`;
+          ShowTokenMessage(message);
+
+          // クリップボードにコピー (オプション)
+          navigator.clipboard.writeText(accessToken)
+            .then(() => {
+              console.log('Tokenをクリップボードにコピーしました');
+            })
+            .catch(err => {
+              console.error('クリップボードへのコピーに失敗しました: ', err);
+            });
+
+        } catch (error) {
+          console.error('Token発行中にエラーが発生しました:', error);
+          ShowError(error);
+        }
+      });
+
+      // サイドバーの表示/非表示
+      const hamburger = document.getElementById('hamburger');
+      const sidebar = document.getElementById('sidebar');
+
+      // 初期状態ではサイドバーは非表示
+      sidebar.classList.remove('open');
+
+      hamburger.addEventListener('click', () => {
+        sidebar.classList.toggle('open');
+        hamburger.classList.toggle('open');
+      });
+
+      // サイドバーの項目とコンテンツエリアの関連付け
+      const menuItems = document.querySelectorAll('.sidebar-item');
+      const contentSections = document.querySelectorAll('.content-section');
+
+      // 全てのコンテンツセクションを非表示にする関数
+      function hideAllSections() {
+        contentSections.forEach(section => {
+          section.style.display = 'none';
+        });
+      }
+
+      // 指定されたIDのセクションを表示する関数
+      function showSection(sectionId) {
+        hideAllSections(); // まず全てを非表示に
+        const section = document.getElementById(sectionId);
+        section.style.display = 'block';
+      }
+
+      menuItems.forEach(item => {
+        item.addEventListener('click', () => {
+          // アクティブな項目のリセット
+          menuItems.forEach(i => i.classList.remove('active'));
+
+          // クリックされた項目をアクティブにする
+          item.classList.add('active');
+
+          // クリックされた項目に対応するコンテンツを表示する
+          const targetId = item.getAttribute('data-target');
+          showSection(targetId);
+
+          // サイドバーを閉じる
+          sidebar.classList.remove('open');
+          hamburger.classList.remove('open');
+        });
+      });
+
+      // 初期表示はホーム
+      showSection('homeSection');
+
+      // 分析のフォーム処理
+      const panelCountInput = document.getElementById('panelCount');
+      const sunshineTimeInput = document.getElementById('sunshineTime');
+      const analyzeButton = document.getElementById('analyzeButton');
+      const resultDiv = document.getElementById('result');
+
+      analyzeButton.addEventListener('click', () => {
+        const panelCount = parseInt(panelCountInput.value);
+        const sunshineTime = parseInt(sunshineTimeInput.value);
+        const powerPerPanel = 0.2; // kW
+        const solarPower = panelCount * sunshineTime * powerPerPanel;
+
+
+
+        if (panelCount < 1 || panelCount > 30) {
+          resultDiv.innerHTML = 'パネルの数は1から30の間で入力してください。';
+          return;
+        }
+
+        if (sunshineTime < 1 || sunshineTime > 24) {
+          resultDiv.innerHTML = '時間は24時間までの範囲で入力してね'
+          return;
+        }
+
+        let adviceText = '';
+
+        if (solarPower < 1) {
+          adviceText = `現在の発電量は<b>1kWh以下</b>と非常に少ないです。<br>
+                  発電量を増やすための具体的な提案は以下の通りです。<br>
+                  <ul>
+                    <li>パネルの数を増やす</li>
+                    <li>日当たりの良い場所に設置する</li>
+                    <li>パネルの角度を調整する</li>
+                    <li>定期的にパネルの清掃を行い、効率を維持する</li>
+                    <li>高効率のパネルに交換する</li>
+                  </ul>
+                  これらの対策を講じることで、発電量を増やすことが期待できます。`;
+        } else if (solarPower < 3) {
+          adviceText = `現在の発電量は<b>3kWh以下</b>です。<br>
+                  発電効率を上げるための提案は以下の通りです。<br>
+                  <ul>
+                    <li>パネルの角度を少し調整する</li>
+                    <li>日陰になる部分を減らす、反射光を利用するなど、設置場所を見直す</li>
+                    <li>パネルの清掃を定期的に行う</li>
+                    <li>エネルギー管理システムを導入し、効率的なエネルギー使用を図る</li>
+                  </ul>
+                  これらの対策を講じることで、発電効率をさらに向上させることができます。`;
+        } else if (solarPower < 5) {
+          adviceText = `現在の発電量は<b>5kWh以下</b>です。<br>
+                  発電効率を上げるための提案は以下の通りです。<br>
+                  <ul>
+                    <li>パネルの角度を少し調整する</li>
+                    <li>日陰になる部分を減らす、反射光を利用するなど、設置場所を見直す</li>
+                    <li>パネルの清掃を定期的に行う</li>
+                    <li>エネルギー管理システムを導入し、効率的なエネルギー使用を図る</li>
+                  </ul>
+                  これらの対策を講じることで、発電効率をさらに向上させることができます。`;
+        } else if (solarPower < 7) {
+          adviceText = `現在の発電量は<b>7kWh以下</b>です。<br>
+                  発電効率を上げるための提案は以下の通りです。<br>
+                  <ul>
+                    <li>パネルの角度を少し調整する</li>
+                    <li>日陰になる部分を減らす、反射光を利用するなど、設置場所を見直す</li>
+                    <li>パネルの清掃を定期的に行う</li>
+                    <li>エネルギー管理システムを導入し、効率的なエネルギー使用を図る</li>
+                  </ul>
+                  これらの対策を講じることで、発電効率をさらに向上させることができます。`;
+        } else if (solarPower < 9) {
+          adviceText = `現在の発電量は<b>9kWh以下</b>です。<br>
+                  発電効率を上げるための提案は以下の通りです。<br>
+                  <ul>
+                    <li>パネルの角度を少し調整する</li>
+                    <li>日陰になる部分を減らす、反射光を利用するなど、設置場所を見直す</li>
+                    <li>パネルの清掃を定期的に行う</li>
+                    <li>エネルギー管理システムを導入し、効率的なエネルギー使用を図る</li>
+                  </ul>
+                  これらの対策を講じることで、発電効率をさらに向上させることができます。`;
+        } else {
+          adviceText = `素晴らしい！あなたの太陽光発電システムは1日あたり約<b>${solarPower}kWh</b>の電力を生成し、非常に効率的に動作しています。<br>
+                  さらに効率を上げるための提案は以下の通りです。<br>
+                  <ul>
+                    <li>エネルギー管理システムを導入し、効率的なエネルギー使用を図る</li>
+                    <li>蓄電システムを導入し、余剰電力を有効活用する</li>
+                    <li>定期的なメンテナンスを行い、システムの最適な状態を維持する</li>
+                  </ul>
+                  これらの対策を講じることで、さらに効率的な発電が期待できます。`;
+        }
+
+        resultDiv.innerHTML = adviceText;
+      });
+
+
+
+      // 保存ボタンのイベントリスナー
+      const saveSettingsButton = document.getElementById('saveSettings');
+      saveSettingsButton.addEventListener('click', async () => {
+        const aiProvider = document.getElementById('aiProvider');
+        ConfigData.settingsData.provider = aiProvider.value;
+        ConfigData.settingsData.token = webapi.value;
+        console.log(webapi)
+        window.api.send('save-settings', ConfigData);
+        console.log('設定を保存しました', ConfigData);
+        title = '設定保存完了';
+        message = "設定が正常に保存されました"
+        ShowINFO(title, message);
+      }); 
+
+      // AIを使用して計算のフォーム処理
+      const aiAnalyzeForm = document.getElementById('aiAnalysisForm');
+      const aiResult = document.getElementById('aiResult');
+      const aiAnalyzeButton = document.getElementById('aiAnalyzeButton');
+      const aiPanelCount = document.getElementById('aiPanelCount').value;
+      const aiSunshineTime = document.getElementById('aiSunshineTime').value;
+      const aiInstallationTime = document.getElementById('aiInstallationTime').value;
+      const aiGeneration = document.getElementById('aiGeneration').value;
+      const aiLocation = document.getElementById('aiLocation').value;
+      const aiAngle = document.getElementById('aiAngle').value;
+      const aiSystemCapacity = document.getElementById('aiSystemCapacity').value;
+      const aiPurpose = document.getElementById('aiPurpose').value;
+      
+
+            if (aiAnalyzeForm && aiResult && aiAnalyzeButton) {
+        aiAnalyzeButton.addEventListener('click', async (event) => {
+                event.preventDefault();
+
+          aiAnalyzeButton.disabled = true;
+          aiAnalyzeButton.textContent = "ただいま回答を処理中です...";
+
+          // フォームの値を取得
+          const aiPanelCount = document.getElementById('aiPanelCount').value;
+          const aiSunshineTime = document.getElementById('aiSunshineTime').value;
+          const aiInstallationTime = document.getElementById('aiInstallationTime').value;
+          const aiGeneration = document.getElementById('aiGeneration').value;
+          const aiLocation = document.getElementById('aiLocation').value;
+          const aiAngle = document.getElementById('aiAngle').value;
+          const aiSystemCapacity = document.getElementById('aiSystemCapacity').value;
+          const aiPurpose = document.getElementById('aiPurpose').value;
+
+
+          if (aiPanelCount < 1 || aiPanelCount > 30) {
+            aiResult.innerHTML = 'パネル数は最大30です';
+            return;
+          } else if (aiSunshineTime < 1 || aiSunshineTime > 24) {
+            aiResult.innerHTML = '日照時間は最大24時間までです';
+            return;
+          } else if (aiInstallationTime < 1990 || aiInstallationTime > 2075) {
+            aiResult.innerHTML = '設置した年について<br>最小1990年最大2075年までです';
+            return;
+          } else if (aiGeneration > 0) {
+            aiResult.innerHTML = '総発電量が入力されていません'
+          }
+
+          // AIへの質問
+          const question = `太陽光発電のデータが次のような場合、どのようなアドバイスがありますか？ パネル数: ${aiPanelCount}, 日照時間: ${aiSunshineTime}時間, 1日の総発電量(kWh): ${aiGeneration}, どこに住んでいるか: ${aiLocation}, ソーラーパネルの設置角度: ${aiAngle}°, 設置した年: ${aiInstallationTime}, 太陽光発電システム全体の容量(kW): ${aiSystemCapacity}, アドバイスを求める目的: ${aiPurpose}`;
+
+          try {
+            // APIにPOSTリクエストを送信
+            const response = await fetch('https://webapi-8trs.onrender.com/chat', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({
+                prompt: question,
+                provider: ConfigData.settingsData.provider,
+                token: ConfigData.settingsData.token
+              })
+            });
+
+            const data = await response.json();
+            if (data.response) {
+              const html = marked.parse(data.response);
+              aiResult.innerHTML = html;
+            } else {
+              aiResult.innerHTML = "AIからの回答がありませんでした。";
+            }
+          } catch (error) {
+            console.error('AIへの質問中にエラーが発生しました:', error);
+            aiResult.innerHTML = 'エラーが発生しました。';
+            aiAnalyzeForm.reset();
+          } finally {
+            aiAnalyzeButton.disabled = false;
+            aiAnalyzeButton.textContent = "AIに質問";
+          }
+        });
+      } else {
+        console.error("aiAnalysisForm または aiResult element が見つかりません");
+      }
+
+      // スライダーの値を表示する処理
+      const aiPanelCountSlider = document.getElementById('aiPanelCount');
+      const aiPanelCountValue = document.getElementById('aiPanelCountValue');
+      const aiSunshineTimeSlider = document.getElementById('aiSunshineTime');
+      const aiSunshineTimeValue = document.getElementById('aiSunshineTimeValue');
+      const aiAngleSlider = document.getElementById('aiAngle');
+      const aiAngleValue = document.getElementById('aiAngleValue');
+
+      aiPanelCountSlider.addEventListener('input', () => {
+        aiPanelCountValue.textContent = aiPanelCountSlider.value;
+      });
+
+      aiSunshineTimeSlider.addEventListener('input', () => {
+        aiSunshineTimeValue.textContent = aiSunshineTimeSlider.value;
+      });
+
+      aiAngleSlider.addEventListener('input', () => {
+        aiAngleValue.textContent = aiAngleSlider.value;
+      });
+    });
+  </script>
+</body>
+
+</html>

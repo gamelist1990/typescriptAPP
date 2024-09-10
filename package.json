@@ -1,0 +1,54 @@
+{
+  "name": "adviser",
+  "version": "0.0.3",
+  "description": "NodeJS版エネルギー効率アドバイザーV0.2開発中",
+  "main": "scripts/main.js",
+  "scripts": {
+    "start": "cd scripts & electron main.js",
+    "copy": "npm run copy1 & npm run copy2",
+    "copy1": "xcopy src\\*.html scripts\\ /Y",
+    "copy2": "xcopy src\\*.js scripts\\ /Y",
+    "build": "tsc",
+    "builder": "electron-builder",
+    "go": "npm run copy & npm run build & npm run start"
+  },
+  "author": "Gamelist1990",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/electron": "^1.6.10",
+    "@types/node": "^22.5.1",
+    "electron": "^32.0.1",
+    "electron-builder": "^24.13.3",
+    "typescript": "^5.5.4"
+  },
+  "type": "commonjs",
+  "doce": {
+    "slect1": "nsis",
+    "slect2": "portable"
+  },
+  "build": {
+    "appId": "com.example.energyadviser",
+    "productName": "EnergyAdviser",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "scripts/**/*",
+      "node_modules/**/*",
+      "package.json"
+    ],
+    "win": {
+      "target": "Portable",
+      "icon": "scripts/assets/app.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": "always",
+      "shortcutName": "エネルギー効率アドバイザーV0.2"
+    }
+  },
+  "dependencies": {
+    "@electron/remote": "^2.1.2"
+  }
+}

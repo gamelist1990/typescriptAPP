@@ -1,0 +1,38 @@
+{
+  "include": [
+    "src/**/*.ts"],
+  "exclude": [
+    "node_modules"
+  ],
+  "watchOptions": {
+    "excludeDirectories": [
+      "node_modules"
+    ]
+  },
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "CommonJS",
+    "moduleResolution": "node",
+    "noEmit": false,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "strict": true,
+    "allowJs": true,
+    "checkJs": false,
+    "outDir": "./scripts",
+    "strictNullChecks": true,
+    "strictFunctionTypes": true,
+    "strictPropertyInitialization": true,
+    "strictBindCallApply": true,
+    "noImplicitReturns": true,
+    "noUnusedLocals": true,
+    "noImplicitAny": true,
+    "alwaysStrict": true,
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitThis": true,
+    "noUnusedParameters": true,
+    "sourceMap": false,
+    "removeComments": false,
+    "allowSyntheticDefaultImports": true
+  }
+}

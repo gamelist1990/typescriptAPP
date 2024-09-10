@@ -1,0 +1,18 @@
+Windows Targets
+NSIS: Standard installer
+NSIS-Web: Web installer
+Portable: Portable app without installation
+AppX: Windows Store package (requires Windows 10)
+MSI: Microsoft Installer
+Squirrel.Windows: Requires electron-builder-squirrel-windows dependency
+7z, zip, tar.xz, tar.lz, tar.gz, tar.bz2, dir: Various archive formats1
+macOS Targets
+DMG: Disk image
+PKG: Installer package
+MAS: Mac App Store package
+MAS-Dev: Mac App Store development package2
+Linux Targets
+AppImage: Universal Linux package
+Snap: Snap package
+Deb: Debian package
+RPM: Red Hat package

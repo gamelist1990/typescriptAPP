@@ -1,4 +1,4 @@
-# # EnergyAdviser ドキュメント
+# EnergyAdviser ドキュメント
 
 ## はじめに
 

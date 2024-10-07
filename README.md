@@ -4,7 +4,7 @@
 
 エネルギー消費を最適化するための頼れる味方、**EnergyAdviser の Node.js 版がついに登場！** 
 
-このソフトウェアは、好評を得ている[エネルギー効率アドバイザー JAVA 版](https://github.com/gamelist1990/Energy-Efficiency-Advisors/) をベースに、Node.js のパワーと柔軟性を最大限に活かして開発されました。 
+このソフトウェアは、好評を得ているか分からない[エネルギー効率アドバイザー JAVA 版](https://github.com/gamelist1990/Energy-Efficiency-Advisors/) をベースに、Node.js のパワーと柔軟性を最大限に活かして開発されました。 
 
 ## 使用方法
 
@@ -14,20 +14,20 @@
 リポジトリをクローンして、以下のコマンドを実行してください。
 
 ```bash
-# 具体的な手順を記述
+git clone https://github.com/gamelist1990/ElectronApp_energyAdviser.git
 ```
 
-ビルドが完了すると、`config` フォルダがドキュメントフォルダに生成されます。
+ビルドが完了し実行されると、`config` フォルダがドキュメントフォルダに生成されます。
 
 ### 2. 設定
 
 `config` フォルダ内の設定ファイルを編集して、EnergyAdviser をカスタマイズしましょう。 
-**(config ファイルの編集方法を記述)**
+**(config ファイルの編集は自己責任)**
 
 ### 3. 実行
 
 準備は万端！EnergyAdviser を起動して、エネルギー効率の旅に出かけましょう！ 
-**(コード例を記述)**
+**リリースページから最新版をダウンロードして実行してください**
 
 ## ドキュメント
 

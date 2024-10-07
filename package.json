@@ -1,13 +1,14 @@
 {
   "name": "adviser",
-  "version": "0.0.3",
-  "description": "NodeJS版エネルギー効率アドバイザーV0.2開発中",
+  "version": "0.0.6",
+  "description": "NodeJS版エネルギー効率アドバイザーV0.6開発中",
   "main": "scripts/main.js",
   "scripts": {
     "start": "cd scripts & electron main.js",
-    "copy": "npm run copy1 & npm run copy2",
+    "copy": "npm run copy1 & npm run copy2 & npm run copy3",
     "copy1": "xcopy src\\*.html scripts\\ /Y",
     "copy2": "xcopy src\\*.js scripts\\ /Y",
+    "copy3": "xcopy src\\*.json scripts\\ /Y",
     "build": "tsc",
     "builder": "electron-builder",
     "go": "npm run copy & npm run build & npm run start"
@@ -16,10 +17,11 @@
   "license": "ISC",
   "devDependencies": {
     "@types/electron": "^1.6.10",
+    "@types/marked": "^6.0.0",
     "@types/node": "^22.5.1",
     "electron": "^32.0.1",
     "electron-builder": "^24.13.3",
-    "typescript": "^5.5.4"
+    "typescript": "^5.6.2"
   },
   "type": "commonjs",
   "doce": {
@@ -38,17 +40,18 @@
       "package.json"
     ],
     "win": {
-      "target": "Portable",
+      "target": "nsis",
       "icon": "scripts/assets/app.ico"
     },
     "nsis": {
       "oneClick": false,
       "allowToChangeInstallationDirectory": true,
       "createDesktopShortcut": "always",
-      "shortcutName": "エネルギー効率アドバイザーV0.2"
+      "shortcutName": "エネルギー効率アドバイザーV0.6(β版)"
     }
   },
   "dependencies": {
-    "@electron/remote": "^2.1.2"
+    "@electron/remote": "^2.1.2",
+    "marked": "^14.1.2"
   }
 }

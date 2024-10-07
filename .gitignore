@@ -1,4 +1,6 @@
 scripts/
 node_modules/
 .github
+dist/
+
 

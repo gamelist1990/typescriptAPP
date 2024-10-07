@@ -1,44 +1,48 @@
-function ShowTokenMessage(message) {
+function showTokenMessage(message: string): void {
     const options = {
         type: 'info',
         buttons: ['クリックして続行'],
         title: 'Token発行完了',
         message: message,
-        nolink:true,
+        nolink: true,
     };
 
-    window.electron.showMessageBox(options).then(result => {
+    window.electron.showMessageBox(options).then((result: any) => {
         console.log(result);
     });
 }
 
-function ShowINFO(title,message) {
+function showINFO(title: string, message: string): void {
     const options = {
         type: 'info',
         buttons: ['ok'],
         title: title,
         message: message,
-        nolink:true,
+        nolink: true,
     };
 
-    window.electron.showMessageBox(options).then(result => {
+    window.electron.showMessageBox(options).then((result: any) => {
         console.log(result);
     });
 }
 
-function ShowError(error) {
+function showError(error: string): void {
     const options = {
         type: 'error',
         buttons: [''],
         title: 'Errorが発生しました',
         message: '以下のエラーが発生しました',
         detail: error,
-        nolink:true,
+        nolink: true,
     };
 
-    window.electron.showMessageBox(options).then(result => {
+    window.electron.showMessageBox(options).then((result: any) => {
         console.log(result);
     });
 }
+
+
+
+export { showTokenMessage, showError, showINFO }
 
 console.log("API has been Loaded..");

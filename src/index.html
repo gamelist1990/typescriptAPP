@@ -197,20 +197,24 @@
     }
 
     /* Chrome, Safari, Edge 対応 */
-::-webkit-scrollbar {
-    display: none;
-}
+    ::-webkit-scrollbar {
+      display: none;
+    }
 
-/* Firefox 対応 */
-* {
-    scrollbar-width: none;
-}
+    /* Firefox 対応 */
+    * {
+      scrollbar-width: none;
+    }
 
-/* Internet Explorer, Edge 対応 */
-* {
-    -ms-overflow-style: none;
-}
-</style>
+    /* Internet Explorer, Edge 対応 */
+    * {
+      -ms-overflow-style: none;
+    }
+
+    #GameSection {
+      height: 600px;
+    }
+  </style>
 </head>
 
 <body>
@@ -246,6 +250,10 @@
         <i class="fa-solid fa-layer-group"></i>
         更新履歴
       </div>
+      <div class="sidebar-item" data-target="GameSection">
+        <i class="fa-solid fa-gamepad"></i>
+        避け避けゲーム
+      </div>
     </div>
   </div>
   <main>
@@ -260,26 +268,26 @@
       <p>NodeJS版では分析/AIに質問/設定と三つのタブで管理されています<br>
         詳細については以下の機能一覧を確認して下さい
 
-        <h3>・機能一覧</h3>
-        <ui>
-          <li>
-            分析 :この機能はオフラインでも使用可能な簡易的な計算が可能です
-          </li>
-          <br>
-          <li>
-            AIを使用して計算 :この機能はWEBAPIに質問を送りAIが最適な回答をしてくれます
-          </li>
-          <br>
-          <li>
-            設定 :現在はAIのプロバイダーの指定/Tokenの発行の設定のみ追加しています
-          </li>
-        </ui>
+      <h3>・機能一覧</h3>
+      <ui>
+        <li>
+          分析 :この機能はオフラインでも使用可能な簡易的な計算が可能です
+        </li>
         <br>
-        <p>以上が現時点のNodeJS版の機能です</p>
-        
-      
+        <li>
+          AIを使用して計算 :この機能はWEBAPIに質問を送りAIが最適な回答をしてくれます
+        </li>
+        <br>
+        <li>
+          設定 :現在はAIのプロバイダーの指定/Tokenの発行の設定のみ追加しています
+        </li>
+      </ui>
+      <br>
+      <p>以上が現時点のNodeJS版の機能です</p>
+
+
       </p>
-     <p id="version">現在バージョンを取得中です...</p>
+      <p id="version">現在バージョンを取得中です...</p>
     </div>
     <div id="analysisSection" class="content-section">
       <h2><i class="fas fa-chart-line"></i> 分析 </h2>
@@ -376,7 +384,8 @@
       <h2><i class="fas fa-tools"></i> 設定 </h2>
       <br>
       <p>AIプロバイダーに関してWEBAPI側の問題で使用できないAIがあるんで一部のAIに絞っています<br><br>最終WEBAPI更新日2024/08/30 <br>webapi:
-        https://gamelist1990.github.io/gamelist1990/page/<br>webapi及びMenuClient管理者(<a href="https://github.com/gamelist1990" target="_blank">Gamelist1990</a>)</p>
+        https://gamelist1990.github.io/gamelist1990/page/<br>webapi及びMenuClient管理者(<a
+          href="https://github.com/gamelist1990" target="_blank">Gamelist1990</a>)</p>
       <label for="aiProvider">AIプロバイダー:</label>
       <select id="aiProvider">
         <option value="Koala">Koala</option>
@@ -396,9 +405,26 @@
     </div>
 
     <div id="UpdateSection" class="content-section">
-       <h2>更新履歴ページ</h2>
-           <p>只今ネットワークから更新履歴を取得しています</p>
+      <h2>更新履歴ページ</h2>
+      <p>只今ネットワークから更新履歴を取得しています</p>
     </div>
+
+
+
+
+    <div id="GameSection" class="content-section" style="position: relative; overflow: hidden;">
+      <iframe src="https://gamelist1990.github.io/gamelist1990/electron/game.html" width="100%" height="100%"
+        frameborder="0" style="position: absolute; 
+                     top: 0; 
+                     left: 0; 
+                     width: 100%; 
+                     height: 100%;
+                     overflow: hidden;">
+      </iframe>
+      <h2>Mini Game</h2>
+      <p>只今ネットワークからMiniGameを取得しています</p>
+    </div>
+
   </main>
 </body>
 

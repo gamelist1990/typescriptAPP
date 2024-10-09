@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
     },3000)
 
 
-    //InnerHtml
+    //InnerHtmlGameSection
     inputHtml();
     fetchAndDisplayHTML("https://gamelist1990.github.io/gamelist1990/version/update.html","UpdateSection")
     
@@ -54,6 +54,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 VersionP.innerHTML = `現在のバージョンは${version}α版です`;
         },2000)
     }
+
+
+    
 
     async function fetchAndDisplayHTML(url: string | URL | Request, elementId: string) {
         try {

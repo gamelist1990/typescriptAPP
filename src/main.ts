@@ -203,8 +203,8 @@ function createWindow() {
     loadWindow.loadFile(path.join(__dirname, 'loading.html'));
 
     const mainWindow = new BrowserWindow({
-        width: 910,
-        height: 700,
+        width: 858,
+        height: 790,
         icon: path.join(__dirname, 'assets', 'app.ico'),
         show: false,
         webPreferences: {

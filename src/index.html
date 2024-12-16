@@ -234,6 +234,10 @@
         <i class="fas fa-home"></i>
         ホーム
       </div>
+      <div class="sidebar-item" data-target="simulationSection">
+        <i class="fas fa-cogs"></i>
+        シミュレーション
+      </div>
       <div class="sidebar-item" data-target="analysisSection">
         <i class="fas fa-chart-bar"></i>
         分析
@@ -262,7 +266,9 @@
       <h2>概要</h2>
       <p>このアプリケーションの開発にはelectronを使用しています</p>
       <p>また本ソフトウェアは<span style="color: blue;">エネルギー効率アドバイザー</span>Java版をNodeJSで再開発したソフトウェアです</p>
-      <p>10/04の更新で自動更新プログラムとお知らせ機能が追加されました</p>
+      <p>11/13時点で(実験的な機能：シュミレーション、分析、AIサービス)を追加しました
+        <br>追記：webapiを使ってリアルタイムで取得しようと思ったけど<a href="https://www.enegaeru.com/">サービス</a>最安値月15万!?!?
+      </p>
       <br>
       <h2>使用方法☟</h2>
       <p>NodeJS版では分析/AIに質問/設定と三つのタブで管理されています<br>
@@ -284,10 +290,30 @@
       </ui>
       <br>
       <p>以上が現時点のNodeJS版の機能です</p>
-
-
       </p>
       <p id="version">現在バージョンを取得中です...</p>
+    </div>
+    <div id="simulationSection" class="content-section" style="display: none;">
+      <h2><i class="fas fa-cogs"></i> シミュレーション </h2>
+      <p>お知らせ:<br>
+        太陽光パネル設置した場合と設置しなかった場合のシュミレーションを行います
+      </p>
+      <form id="simulationForm">
+        <label for="averageDailyConsumption">1日の平均消費電力(kWh)</label>
+        <input type="number" id="averageDailyConsumption" name="averageDailyConsumption" min="0" value="" required>
+        <label for="solarPanelArea">太陽光パネルの面積(m²) </label>
+        <input type="number" id="solarPanelArea" name="solarPanelArea" min="0" value="" required>
+        <label for="efficiency">パネルの発電効率(%)</label>
+        <input type="number" id="efficiency" name="efficiency" min="0" max="100" value="" required>
+        <label for="sunshineTime">日照時間【最大24時間】</label>
+        <input type="number" id="sunshineTime" name="sunshineTime" min="1" max="24" value="" required>
+        <label for="electricityCost">電力料金(円/kWh)</label>
+        <input type="number" id="electricityCost" name="electricityCost" min="0" value="" required>
+        <label for="co2ReductionRate">CO2排出量(g/kWh)</label>
+        <input type="number" id="co2ReductionRate" name="co2ReductionRate" min="0" max="1000" value="" required>
+        <button type="button" class="button" id="simulateButton"><i class="fas fa-calculator"></i> 実行</button>
+      </form>
+      <div id="simulationResult" class="result"></div>
     </div>
     <div id="analysisSection" class="content-section">
       <h2><i class="fas fa-chart-line"></i> 分析 </h2>
@@ -295,10 +321,16 @@
         分析の回答をより詳細に行うようにしました
       </p>
       <form id="analysisForm">
-        <label for="panelCount">太陽光パネルの数【最大30】</label>
-        <input type="number" id="panelCount" name="panelCount" min="1" max="30" value="" required>
+        <label for="panelArea">太陽光パネルの面積(m²) </label>
+        <input type="number" id="panelArea" name="panelArea" min="0" value="" required>
+        <label for="efficiency">パネルの発電効率(%)</label>
+        <input type="number" id="efficiency" name="efficiency" min="0" max="100" value="" required>
         <label for="sunshineTime">日照時間【最大24時間】</label>
         <input type="number" id="sunshineTime" name="sunshineTime" min="1" max="24" value="" required>
+        <label for="electricityCost">電力料金(円/kWh)</label>
+        <input type="number" id="electricityCost" name="electricityCost" min="0" value="" required>
+        <label for="co2ReductionRate">CO2削減率(%)</label>
+        <input type="number" id="co2ReductionRate" name="co2ReductionRate" min="0" max="100" value="" required>
         <button type="button" class="button" id="analyzeButton"><i class="fas fa-calculator"></i> 実行</button>
       </form>
       <div id="result" class="result"></div>
@@ -306,8 +338,14 @@
     <div id="aiAnalysisSection" class="content-section">
       <h2><i class="fas fa-brain"></i> AIを使用して計算 </h2>
       <form id="aiAnalysisForm">
-        <label for="aiPanelCount">太陽光パネルの数【最大30】</label>
-        <input type="range" id="aiPanelCount" name="aiPanelCount" min="1" max="30" value="1" required>
+        <label for="aiPanelArea">太陽光パネルの面積(m²) </label>
+        <input type="number" id="aiPanelArea" name="aiPanelArea" min="0" value="" required>
+        <label for="aiEfficiency">パネルの発電効率(%)</label>
+        <input type="number" id="aiEfficiency" name="aiEfficiency" min="0" max="100" value="" required>
+        <label for="aiElectricityCost">電力料金(円/kWh)</label>
+        <input type="number" id="aiElectricityCost" name="aiElectricityCost" min="0" value="" required>
+        <label for="aiCo2ReductionRate">CO2削減率(%)</label>
+        <input type="number" id="aiCo2ReductionRate" name="aiCo2ReductionRate" min="0" max="100" value="" required>
         <span id="aiPanelCountValue" class="slider-value">1</span>
         <label for="aiSunshineTime">日照時間【最大24時間】</label>
         <input type="range" id="aiSunshineTime" name="aiSunshineTime" min="1" max="24" value="1" required>
@@ -379,7 +417,6 @@
       <div id="aiResult" class="result"></div>
     </div>
 
-
     <div id="settingsSection" class="content-section">
       <h2><i class="fas fa-tools"></i> 設定 </h2>
       <br>
@@ -398,33 +435,26 @@
       <button type="button" id="showDialogButton">取得</button>
       <br>
       <input type="password" id="api" placeholder="APIを入力してください">
-
       <br>
       <br>
       <button id="saveSettings">設定を保存</button>
     </div>
-
     <div id="UpdateSection" class="content-section">
       <h2>更新履歴ページ</h2>
       <p>只今ネットワークから更新履歴を取得しています</p>
     </div>
-
-
-
-
     <div id="GameSection" class="content-section" style="position: relative; overflow: hidden;">
       <iframe src="https://gamelist1990.github.io/gamelist1990/electron/game.html" width="100%" height="100%"
-        frameborder="0" style="position: absolute; 
-                     top: 0; 
-                     left: 0; 
-                     width: 100%; 
+        frameborder="0" style="position: absolute;
+                     top: 0;
+                     left: 0;
+                     width: 100%;
                      height: 100%;
                      overflow: hidden;">
       </iframe>
       <h2>Mini Game</h2>
       <p>只今ネットワークからMiniGameを取得しています</p>
     </div>
-
   </main>
 </body>
 

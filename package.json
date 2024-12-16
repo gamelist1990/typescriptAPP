@@ -1,6 +1,6 @@
 {
   "name": "adviser",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "NodeJS版エネルギー効率アドバイザーV0.7開発中",
   "main": "scripts/main.js",
   "scripts": {
